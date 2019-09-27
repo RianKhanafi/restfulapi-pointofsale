@@ -25,6 +25,7 @@ $ npm start
 # Route
 - **Categories** 
   **/categories**      to get data category 
+  
   **/categories/:id**  to delete data category 
 - **products** 
   **/products**  to get data products as search paginate category 
