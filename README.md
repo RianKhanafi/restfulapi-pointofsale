@@ -1,4 +1,3 @@
-# restfulapi-pointofsale
 
 # About therestfulapi-pointofsale
 therestfulapi-pointofsale is the ecommerce application
