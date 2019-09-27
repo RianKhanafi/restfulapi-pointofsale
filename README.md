@@ -32,9 +32,9 @@ $ npm start
   - **/products/:id** to delete data products
   - **/products/reduce** to reduce products
   
-  # METHOD
-  - **POST** post data
-  - **GET** get data
-  - **PUT** update data
+# METHOD
+ - **POST** post data
+ - **GET** get data
+ - **PUT** update data
   
   
