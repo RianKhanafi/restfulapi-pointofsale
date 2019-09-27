@@ -7,6 +7,7 @@ therestfulapi-pointofsale is the ecommerce application
 - clone or download this repository https://github.com/RianKhanafi/restfulapi-pointofsale.git
 - import database sql
   open your console and write 
+  
 $ npm start 
 
 # features
@@ -23,18 +24,18 @@ $ npm start
 - login and register with jsonwebtoken(JWT)
 
 # Route
-- ** Categories ** 
-  ** /categories **      to get data category 
-  ** /categories/:id **  to delete data category 
-- ** products ** 
-  ** /products **  to get data products as search paginate category 
-  ** /products/paginate ** to running pagination on products page
-  ** /products/:id ** to delete data products
-  ** /products/reduce ** to reduce products
+- **Categories** 
+  **/categories**      to get data category 
+  **/categories/:id**  to delete data category 
+- **products** 
+  **/products**  to get data products as search paginate category 
+  **/products/paginate** to running pagination on products page
+  **/products/:id** to delete data products
+  **/products/reduce** to reduce products
   
   # METHOD
-  ** POST ** post data
-  ** GET ** get data
-  ** PUT ** update data
+  **POST** post data
+  **GET** get data
+  **PUT** update data
   
   
