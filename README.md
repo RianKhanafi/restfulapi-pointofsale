@@ -1,6 +1,6 @@
 
-# About therestfulapi-pointofsale
-therestfulapi-pointofsale is the ecommerce application
+# About the restfulapi-pointofsale
+the restfulapi-pointofsale is the ecommerce application
 
 # How to use it
 - clone or download this repository https://github.com/RianKhanafi/restfulapi-pointofsale.git
