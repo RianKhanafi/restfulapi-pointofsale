@@ -27,7 +27,7 @@ module.exports = {
                 res.json({
                     status: 200,
                     message: 'success adding category',
-                    data: resultQuery
+                    data: data
                 })
             })
             .catch(err => {
