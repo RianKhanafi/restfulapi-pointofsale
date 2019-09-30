@@ -6,6 +6,7 @@ const bodyParser = require('body-parser') // for parsing req.body
 const morgan = require('morgan')
 const fileUpload = require('express-fileupload')
 
+require('dotenv').config()
 
 
 

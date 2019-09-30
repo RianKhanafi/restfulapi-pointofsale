@@ -18,7 +18,7 @@ var corsOptionsDelegate = function (req, callback) {
 }
 
 route
-    .get('/products', cors(corsOptionsDelegate), middleware.checkToken, productsController.getProducts)
+    .get('/products', cors(corsOptionsDelegate), productsController.getProducts)
     .get('/products/paginate', cors(corsOptionsDelegate), middleware.checkToken, productsController.getpaginateProducts)
     .post('/products', cors(corsOptionsDelegate), middleware.checkToken, productsController.addProduct)
     .delete('/products/:id', cors(corsOptionsDelegate), middleware.checkToken, productsController.deleteProduct)

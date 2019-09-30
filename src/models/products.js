@@ -1,5 +1,5 @@
-const conn = require('../configs/db')
-const fs = require('fs')
+const conn = require('../configs/db') // config db
+const fs = require('fs') // file system
 module.exports = {
     getProducts: (data) => {
         const search = data.search
@@ -15,7 +15,7 @@ module.exports = {
                 })
             } else if (sortBy != null) {
                 console.log(sortBy)
-                conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id ORDER BY ' + sortBy + ' desc', (err, result) => {
+                conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id ORDER BY ' + sortBy + '', (err, result) => {
                     if (!err) {
                         resolve(result)
                     } else {
