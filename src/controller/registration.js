@@ -4,15 +4,17 @@ const jwt = require('jsonwebtoken')
 const config = require('../../auth/config')
 const conn = require('../configs/db')
 const bcrypt = require('bcryptjs');
+const cookieParser = require('cookie-parser')
 const saltRounds = 10;
 
 module.exports = {
     addRegistration: (req, res) => {
-        let { name, email, password, id_level } = req.body
+        let { name, email, password } = req.body
         let id = uuidv4()
         let salt = bcrypt.genSaltSync(saltRounds);
         let hash = bcrypt.hashSync(password, salt);
         password = hash
+        let id_level = 1
         let data = { id, name, email, password, id_level }
         registrationModel.addRegistration(data)
             .then(resultQuery => {
@@ -48,9 +50,14 @@ module.exports = {
     },
     login: (req, res) => {
         let email = req.body.email
+        // console.log(email);
         let password = req.body.password
-        // For the given username fetch user from DB
+        // For the given username fetch u   ser from DB
         conn.query('SELECT * FROM user WHERE email=?', email, (err, result) => {
+            // if (result[0] !== undefined) {
+            //     console.log('udfined');
+            //     res.end();
+            // }
             let checkPass = bcrypt.compareSync(password, result[0].password)
             if (checkPass) {
                 let token = jwt.sign({ email: email }, process.env.SECRET_KEY, { expiresIn: '24h' })
@@ -59,6 +66,7 @@ module.exports = {
                     message: 'Authentication successful!',
                     token: token
                 })
+                // res.cookie('token', token, { httpOnly: true }).sendStatus(200)
             } else {
                 res.send(403).json({
                     success: false,

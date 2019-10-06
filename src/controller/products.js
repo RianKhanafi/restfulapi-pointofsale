@@ -4,17 +4,22 @@ const fileUpload = require('express-fileupload')
 const uuidv4 = require('uuid/v4')
 const fs = require('fs')
 
+
 module.exports = {
+
     getProducts: (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         const search = req.query.search
-        const sortBy = req.query.sortBy ? req.query.sort : 'name'
-        const data = { search, sortBy }
+        const sortBy = req.query.sortBy
+        const orderBy = req.query.orderBy
+        const id = req.params.id
+        const data = { search, sortBy, orderBy, id }
         productModel.getProducts(data)
             .then(resultQuery => {
                 res.json({
                     status: 200,
                     message: 'success getting all data',
-                    count: resultQuery.length,
+                    amounth: resultQuery.length,
                     data: resultQuery
                 })
             })
@@ -35,10 +40,11 @@ module.exports = {
                 if (err)
                     return res.status(500).send(err)
             })
-            image = 'images/' + imgName
+            image = imgName
             //uuid
             let id = uuidv4();
             const data = { id, name, description, image, id_category, price, quantity, updated }
+            console.log(data)
             productModel.addProduct(data)
                 .then(resultQuer => {
                     res.json({
@@ -59,8 +65,7 @@ module.exports = {
         }
     },
     deleteProduct: (req, res) => {
-        const { id } = req.params
-        const data = id
+        const data = req.query.id
         productModel.deleteProduct(data)
             .then(resultQuery => {
                 res.json({
@@ -86,6 +91,7 @@ module.exports = {
                 res.json({
                     status: 200,
                     message: 'success getting all data',
+                    amounth: resultQuery.length,
                     data: resultQuery
                 })
             })
@@ -98,15 +104,19 @@ module.exports = {
             })
     },
     updateProduct: (req, res) => {
-        const { name, description, id_category, price, added, id } = req.body
-        image = req.files.image
-        let imgName = uuidv4() + `.${req.files.image.mimetype.split('/')[1]}`
-        image.mv('images/' + imgName, (err) => {
-            if (err)
-                return res.status(200).send(err)
-        })
-        image = 'images/' + imgName
-        const data = { name, description, image, id_category, price, added, id }
+        // rea.setheader('Access-Control-Allow-Origin', '*')
+        const { name, description, image, id_category, price, added } = req.body
+        const id = req.params.id
+        // let imgName = uuidv4() + `.${req.files.image.mimetype.split('/')[1]}`
+        // image.mv('images/' + imgName, (err) => {
+        //     if (err)
+        //         return res.status(200).send(err)
+        // })
+        // image = 'images/' + imgName
+        // let date = new Date();
+        var updated = new Date();
+        const data = { name, description, image, id_category, price, updated, id, }
+        console.log(data);
         productModel.updateProduct(data)
             .then(resultQuery => {
                 res.json({
@@ -127,12 +137,12 @@ module.exports = {
     getsortProducts: (req, res) => {
         const { sort } = req.params
         const data = sort
-        console.log(data)
         productModel.getsortProducts(data)
             .then(resultQuer => {
                 res.json({
                     status: 200,
                     message: 'sort products success',
+                    amounth: resultQuery.length,
                     data: resultQuer
                 })
             })
@@ -151,10 +161,13 @@ module.exports = {
         limit = typeof limit !== 'undefined' ? limit : 5
         sortBy = typeof sortBy !== 'undefined' ? sortBy : 'id'
         productModel.getpaginateProducts(name, page, limit, sortBy)
+            // let totalProduct = await productModel.getTotalAllData()
+            // const total_page = Macth.ceil(totalProduct[0].getTotalAllData / limit)
             .then(resultQuery => {
                 res.json({
                     status: 200,
                     message: 'success getting data',
+                    amounth: resultQuery.length,
                     data: resultQuery
                 })
             })
@@ -169,19 +182,25 @@ module.exports = {
     reduceProducts: (req, res) => {
         const { quantity, id } = req.body
         const data = { id, quantity }
+        // console.log(data);
+        // let countData = data.id.length
+        // console.log(countData);
+        // for (let id = 0; id < countData; id++) {
+        //     const checkOut = [data.id[id], data.quantity[id]]
         productModel.reduceProducts(data)
-            .then(resultQuery => {
-                res.json({
-                    status: '200',
-                    message: 'success reduce product',
-                    data: resultQuery
-                })
-            })
-            .catch(err => {
-                res.status(400).json({
-                    status: '400',
-                    message: 'error reduce product'
-                })
-            })
+        // .then(resultQuery => {
+        //     res.json({
+        //         status: '200',
+        //         message: 'success reduce product',
+        //         data: resultQuery
+        //     })
+        // })
+        // .catch(err => {
+        //     res.status(400).json({
+        //         status: '400',
+        //         message: 'error reduce product'
+        //     })
+        // })
+        // }
     }
 }

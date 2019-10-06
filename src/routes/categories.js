@@ -6,10 +6,10 @@ const categoriesController = require('../controller/categories')
 
 
 // cors 
-var whitelist = ['http://localhost:5000']
+var whitelist = ['http://localhost:3000']
 var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
-    if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    if (whitelist.indexOf(res.header('Access-Control-Allow-Origin')) !== -1) {
         corsOptions = { origin: true }
     } else {
         corsOptions = { origin: false }

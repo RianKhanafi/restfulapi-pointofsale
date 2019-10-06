@@ -4,6 +4,8 @@ module.exports = {
     getProducts: (data) => {
         const search = data.search
         const sortBy = data.sortBy
+        const orderBy = data.orderBy
+        const idparams = data.id
         return new Promise((resolve, reject) => {
             if (search != null) {
                 conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id WHERE name LIKE "%' + search + '%"', (err, result) => {
@@ -13,9 +15,16 @@ module.exports = {
                         reject(err)
                     }
                 })
-            } else if (sortBy != null) {
-                console.log(sortBy)
-                conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id ORDER BY ' + sortBy + '', (err, result) => {
+            } else if (sortBy != null || sortBy === 'name') {
+                conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id ORDER BY ' + sortBy + ' ' + orderBy, (err, result) => {
+                    if (!err) {
+                        resolve(result)
+                    } else {
+                        reject(err)
+                    }
+                })
+            } else if (idparams != null) {
+                conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id WHERE a.id=?', idparams, (err, result) => {
                     if (!err) {
                         resolve(result)
                     } else {
@@ -67,9 +76,9 @@ module.exports = {
         })
     },
     deleteProduct: (data) => {
-        console.log(data)
         return new Promise((resolve, reject) => {
             conn.query('SELECT * FROM products WHERE id=?', data, (err, result) => {
+                console.log(result);
                 conn.query('DELETE FROM products WHERE id =?', data, (err) => {
                     fs.unlink(result[0].image, (err) => {
                         if (err) {
@@ -86,9 +95,10 @@ module.exports = {
         })
     },
     updateProduct: (data) => {
+        console.log(data);
         return new Promise((resolve, reject) => {
             conn.query("SELECT * FROM products WHERE id=?", data.id, (err, result) => {
-                let [img] = result
+                // let [img] = result
                 if (!err) {
                     conn.query('UPDATE products SET ? WHERE id=?', [data, data.id], (err, result) => {
                         fs.unlink(img.image, (err) => {
@@ -120,26 +130,40 @@ module.exports = {
         })
     },
     reduceProducts: (data) => {
-        var reduce = data.quantity
+        // console.log(data);
         return new Promise((resolve, reject) => {
-            conn.query("SELECT * FROM products WHERE id=?", [data.id], (err, result) => {
-                if (result.length > 0) {
-                    const [data] = result
-                    const count = data.quantity - reduce
-                    if (count >= 0) {
-                        conn.query("UPDATE products SET quantity=? WHERE id=?", [count, data.id])
-                        if (!err) {
-                            resolve(result)
+            let countData = data.id.length
+            for (let id = 0; id < countData; id++) {
+                let checkOut = { id: data.id[id], quantity: data.quantity[id] }
+                conn.query("SELECT * FROM products WHERE id=?", [checkOut.id], (err, result) => {
+                    if (result.length > 0) {
+                        let reduce = result[0].quantity - checkOut.quantity
+                        if (reduce >= 0) {
+                            conn.query("UPDATE products SET quantity=? WHERE id=?", [reduce, checkOut.id])
+                            if (!err) {
+                                resolve(result)
+                            } else {
+                                reject(err)
+                            }
                         } else {
-                            reject(err)
+                            result = "Out of data"
+                            resolve(result)
                         }
                     } else {
-                        result = "Out of data"
-                        resolve(result)
+                        result = "Your id is worng"
+                        reject(result)
                     }
+                })
+            }
+        })
+    },
+    getTotalAllData: () => {
+        return new Promise((resolve, reject) => {
+            conn.query('SELECT COUNT(id)', (err, result) => {
+                if (!err) {
+                    resolve(result)
                 } else {
-                    result = "Your id is worng"
-                    reject(result)
+                    reject(err)
                 }
             })
         })

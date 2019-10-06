@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../../auth/config')
 module.exports = {
     addRegistration: (data) => {
+        console.log(data);
         return new Promise((resolve, reject) => {
             conn.query('SELECT * FROM user WHERE email=?', data.email, (err, result) => {
                 if (result.length < 1) {
