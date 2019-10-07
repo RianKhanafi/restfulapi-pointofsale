@@ -8,10 +8,10 @@ const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const fetch = require("node-fetch");
-const redis = require('redis')
+// const redis = require('redis')
 
+// const client = redis.createClient(REDIS_PORT)
 require('dotenv').config()
-
 
 
 // const path = require('path') // file

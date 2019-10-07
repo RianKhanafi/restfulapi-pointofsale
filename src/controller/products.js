@@ -3,7 +3,7 @@ const productModel = require('../models/products')
 const fileUpload = require('express-fileupload')
 const uuidv4 = require('uuid/v4')
 const fs = require('fs')
-
+const db = require('../configs/db')
 
 module.exports = {
 
@@ -19,13 +19,14 @@ module.exports = {
                 res.json({
                     status: 200,
                     message: 'success getting all data',
-                    amounth: resultQuery.length,
+                    length: resultQuery.length,
                     data: resultQuery
                 })
             })
             .catch(err => {
                 res.status(500).json({
                     status: 500,
+                    length: 0,
                     message: 'error getting all data from database'
                 })
             })
@@ -158,49 +159,62 @@ module.exports = {
         var { name, page, limit, sortBy } = req.query
         name = typeof name !== 'undefined' ? name : ""
         page = typeof page !== 'undefined' ? page : 0
-        limit = typeof limit !== 'undefined' ? limit : 5
+        limit = typeof limit !== 'undefined' ? limit : 6
         sortBy = typeof sortBy !== 'undefined' ? sortBy : 'id'
-        productModel.getpaginateProducts(name, page, limit, sortBy)
-            // let totalProduct = await productModel.getTotalAllData()
-            // const total_page = Macth.ceil(totalProduct[0].getTotalAllData / limit)
-            .then(resultQuery => {
-                res.json({
-                    status: 200,
-                    message: 'success getting data',
-                    amounth: resultQuery.length,
-                    data: resultQuery
-                })
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(400).json({
-                    status: 400,
-                    message: 'error getting data'
-                })
-            })
+
+
+        db.query("SELECT * FROM products", (err, result) => {
+            if (!err) {
+                let page = result.length
+                if (limit >= page) {
+                    page = 1;
+                } else if (page % limit == 0) {
+                    page = page / limit
+                } else {
+                    page = (page % limit) + 1
+                }
+
+
+                productModel.getpaginateProducts(name, page, limit, sortBy)
+                    .then(resultQuery => {
+                        res.json({
+                            status: 200,
+                            amount: resultQuery.length,
+                            page: page,
+                            message: 'success getting data',
+                            data: resultQuery
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(400).json({
+                            status: 400,
+                            message: 'error getting data'
+                        })
+                    })
+            } else {
+                console.log("Data not isset")
+            }
+        })
+
     },
     reduceProducts: (req, res) => {
         const { quantity, id } = req.body
         const data = { id, quantity }
-        // console.log(data);
-        // let countData = data.id.length
-        // console.log(countData);
-        // for (let id = 0; id < countData; id++) {
-        //     const checkOut = [data.id[id], data.quantity[id]]
+
         productModel.reduceProducts(data)
-        // .then(resultQuery => {
-        //     res.json({
-        //         status: '200',
-        //         message: 'success reduce product',
-        //         data: resultQuery
-        //     })
-        // })
-        // .catch(err => {
-        //     res.status(400).json({
-        //         status: '400',
-        //         message: 'error reduce product'
-        //     })
-        // })
-        // }
+            .then(resultQuery => {
+                res.json({
+                    status: '200',
+                    message: 'success reduce product',
+                    data: resultQuery
+                })
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: '400',
+                    message: 'error reduce product'
+                })
+            })
     }
 }

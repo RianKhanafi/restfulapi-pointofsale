@@ -1,22 +1,40 @@
 const categoriesModel = require('../models/categories')
+const redis = require('redis')
+const client = redis.createClient()
+const categoryRedKey = "user: category"
 
 module.exports = {
     getCategories: (req, res) => {
-        categoriesModel.getCategories()
-            .then(QueryResult => {
-                res.json({
+        return client.get(categoryRedKey, (err, categories) => {
+            if (categories) {
+                const result = JSON.parse(categories);
+                return res.json({
+                    from: 'cache',
                     status: 200,
-                    message: 'success get data categories',
-                    data: QueryResult
+                    length: result.length,
+                    data: result,
+                    message: "Show data success"
                 })
-            })
-            .catch(err => {
-                console.log(err);
-                res.json({
-                    error: 400,
-                    message: 'Error getting data categories'
-                })
-            })
+            } else {
+                categoriesModel.getCategories()
+                    .then(QueryResult => {
+                        client.setex(categoryRedKey, 3600, JSON.stringify(QueryResult));
+                        res.json({
+                            status: 200,
+                            message: 'success get data categories',
+                            length: QueryResult.length,
+                            data: QueryResult
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.json({
+                            error: 400,
+                            message: 'Error getting data categories'
+                        })
+                    })
+            }
+        })
     },
     addCategories: (req, res) => {
         const { category } = req.body
@@ -24,6 +42,9 @@ module.exports = {
         console.log(data);
         categoriesModel.addCategories(data)
             .then(resultQuery => {
+                client.del(categoryRedKey, (err, replay) => {
+                    console.log(replay);
+                });
                 res.json({
                     status: 200,
                     message: 'success adding category',
@@ -43,6 +64,9 @@ module.exports = {
         const data = id
         categoriesModel.deleteCategories(data)
             .then(resultQuery => {
+                client.del(categoryRedKey, (err, replay) => {
+                    console.log(replay);
+                });
                 res.json({
                     status: 200,
                     message: 'success deleteing data',
@@ -64,6 +88,9 @@ module.exports = {
         const data = { id, category }
         categoriesModel.updateCategories([data, idCategory])
             .then(resultQuery => {
+                client.del(categoryRedKey, (err, replay) => {
+                    console.log(replay);
+                });
                 res.json({
                     status: 200,
                     message: 'success updating data',

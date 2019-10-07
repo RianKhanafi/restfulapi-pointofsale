@@ -98,19 +98,21 @@ module.exports = {
         console.log(data);
         return new Promise((resolve, reject) => {
             conn.query("SELECT * FROM products WHERE id=?", data.id, (err, result) => {
-                // let [img] = result
+                let [img] = result
                 if (!err) {
                     conn.query('UPDATE products SET ? WHERE id=?', [data, data.id], (err, result) => {
-                        fs.unlink(img.image, (err) => {
-                            if (err) {
-                                console.log(err);
-                            } console.log('image updated');
-                        })
+                        // if (img.image !== null) {
+                        //     fs.unlink(img.image, (err) => {
+                        //         if (err) {
+                        //             console.log(err);
+                        //         } console.log('image updated');
+                        //     })
                         if (!err) {
                             resolve(result)
                         } else {
                             reject(err)
                         }
+                        // }
                     })
                 }
             })
@@ -156,16 +158,17 @@ module.exports = {
                 })
             }
         })
-    },
-    getTotalAllData: () => {
-        return new Promise((resolve, reject) => {
-            conn.query('SELECT COUNT(id)', (err, result) => {
-                if (!err) {
-                    resolve(result)
-                } else {
-                    reject(err)
-                }
-            })
-        })
     }
+    // },
+    // getTotalAllData: () => {
+    //     return new Promise((resolve, reject) => {
+    //         conn.query('SELECT COUNT(id)', (err, result) => {
+    //             if (!err) {
+    //                 resolve(result)
+    //             } else {
+    //                 reject(err)
+    //             }
+    //         })
+    //     })
+    // }
 }
