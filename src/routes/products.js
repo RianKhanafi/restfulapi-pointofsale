@@ -10,12 +10,14 @@ const productsController = require('../controller/products')
 route
     .get('/products', cors(), productsController.getProducts)
     .get('/products/paginate', cors(), productsController.getpaginateProducts)
-    .post('/products', cors(), middleware.checkToken, productsController.addProduct)
-    .delete('/products', cors(), middleware.checkToken, productsController.deleteProduct)
-    .patch('/products/:id', middleware.checkToken, productsController.updateProduct)
-    .post('/products/reduce', cors(), middleware.checkToken, productsController.reduceProducts)
+    .post('/products', cors(), productsController.addProduct)
+    .delete('/products', cors(), productsController.deleteProduct)
+    .patch('/products/:id', productsController.updateProduct)
+    .post('/products/reduce', cors(), productsController.reduceProducts)
     .get('/products/:id', cors(), productsController.getProducts)
-
+    .get('/countproducts', cors(), productsController.getCountProduct)//???
+    .get('/recentorder', cors(), productsController.getRecentOrder)
+    .get('/countorders', cors(), productsController.getAllOrder)
 module.exports = route
 
 

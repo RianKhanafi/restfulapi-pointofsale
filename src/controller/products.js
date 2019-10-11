@@ -19,14 +19,13 @@ module.exports = {
                 res.json({
                     status: 200,
                     message: 'success getting all data',
-                    length: resultQuery.length,
+                    page: resultQuery.length,
                     data: resultQuery
                 })
             })
             .catch(err => {
                 res.status(500).json({
                     status: 500,
-                    length: 0,
                     message: 'error getting all data from database'
                 })
             })
@@ -165,13 +164,14 @@ module.exports = {
 
         db.query("SELECT * FROM products", (err, result) => {
             if (!err) {
-                let page = result.length
-                if (limit >= page) {
-                    page = 1;
-                } else if (page % limit == 0) {
-                    page = page / limit
+                let pages = result.length
+                console.log(pages)
+                if (limit >= pages) {
+                    pages = 1;
+                } else if (pages % limit == 0) {
+                    pages = pages / limit
                 } else {
-                    page = (page % limit) + 1
+                    pages = (pages % limit) + 1
                 }
 
 
@@ -180,7 +180,7 @@ module.exports = {
                         res.json({
                             status: 200,
                             amount: resultQuery.length,
-                            page: page,
+                            page: pages,
                             message: 'success getting data',
                             data: resultQuery
                         })
@@ -199,9 +199,12 @@ module.exports = {
 
     },
     reduceProducts: (req, res) => {
-        const { quantity, id } = req.body
-        const data = { id, quantity }
-
+        // let date = new Date
+        let idRecent = uuidv4()
+        const { buyer, quantity, id, amount, ordername } = req.body
+        // const date = new Date();
+        const data = { buyer, id, idRecent, ordername, quantity, amount }
+        // console.log(data)
         productModel.reduceProducts(data)
             .then(resultQuery => {
                 res.json({
@@ -214,6 +217,57 @@ module.exports = {
                 res.status(400).json({
                     status: '400',
                     message: 'error reduce product'
+                })
+            })
+    },
+    getCountProduct: (req, res) => {
+        productModel.getCountProduct()
+            .then(result => {
+                res.json({
+                    status: 200,
+                    message: 'success getting all data',
+                    length: result
+                })
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 400,
+                    message: 'error tting data',
+                })
+            })
+    },
+    getRecentOrder: (req, res) => {
+        let orderBy = req.query.order
+        orderBy = typeof orderBy !== 'undefined' ? orderBy : "week"
+        // orderBy = typeof orderBy !== 'undefined' ? orderBy : "week"
+        productModel.getRecentOrde(orderBy)
+            .then(result => {
+                res.json({
+                    status: 200,
+                    message: 'success getting all data',
+                    data: result
+                })
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 400,
+                    message: 'error getting data',
+                })
+            })
+    },
+    getAllOrder: (req, res) => {
+        productModel.getAllOrder()
+            .then((result) => {
+                res.json({
+                    status: 200,
+                    message: 'success getting count order',
+                    data: result
+                })
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 400,
+                    message: 'error getting data count order',
                 })
             })
     }

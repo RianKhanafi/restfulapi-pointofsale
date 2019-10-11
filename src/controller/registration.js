@@ -64,11 +64,12 @@ module.exports = {
                 res.json({
                     success: true,
                     message: 'Authentication successful!',
+                    name: result[0].name,
                     token: token
                 })
                 // res.cookie('token', token, { httpOnly: true }).sendStatus(200)
             } else {
-                res.send(403).json({
+                res.status(403).json({
                     success: false,
                     message: 'Incorrect username or password'
                 })

@@ -1,5 +1,6 @@
 const conn = require('../configs/db') // config db
 const fs = require('fs') // file system
+
 module.exports = {
     getProducts: (data) => {
         const search = data.search
@@ -76,6 +77,7 @@ module.exports = {
         })
     },
     deleteProduct: (data) => {
+
         return new Promise((resolve, reject) => {
             conn.query('SELECT * FROM products WHERE id=?', data, (err, result) => {
                 console.log(result);
@@ -95,7 +97,8 @@ module.exports = {
         })
     },
     updateProduct: (data) => {
-        console.log(data);
+        console.log(data)
+        // console.lo   g(data);
         return new Promise((resolve, reject) => {
             conn.query("SELECT * FROM products WHERE id=?", data.id, (err, result) => {
                 let [img] = result
@@ -120,7 +123,7 @@ module.exports = {
     },
     getpaginateProducts: (name, page, limit, sortBy) => {
         // console.log({ name, page, limit, sortBy });
-        // console.log('SELECT * FROM products where name like "%' + name + '%" ORDER BY ' + sortBy + ' asc limit ' + page + ',' + limit);
+        // console.log('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id where name like "%' + name + '%" ORDER BY ' + sortBy + ' asc limit ' + page + ',' + limit);
         return new Promise((resolve, reject) => {
             conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id where name like "%' + name + '%" ORDER BY ' + sortBy + ' asc limit ' + page + ',' + limit, (err, result) => {
                 if (!err) {
@@ -132,8 +135,18 @@ module.exports = {
         })
     },
     reduceProducts: (data) => {
-        // console.log(data);
+        // console.log(data)
+        let orders = data.ordername
+        if (orders.length > 1) {
+            orders = data.ordername.join()
+            // console.log(orders);
+        }
+        // console.log(data.date)
         return new Promise((resolve, reject) => {
+            // for (let order = 0; order < data.length; order++) {
+            //     let orders = data.order
+            //     console.log(orders)
+            // }
             let countData = data.id.length
             for (let id = 0; id < countData; id++) {
                 let checkOut = { id: data.id[id], quantity: data.quantity[id] }
@@ -143,9 +156,13 @@ module.exports = {
                         if (reduce >= 0) {
                             conn.query("UPDATE products SET quantity=? WHERE id=?", [reduce, checkOut.id])
                             if (!err) {
-                                resolve(result)
-                            } else {
-                                reject(err)
+                                conn.query("INSERT INTO history (idRecent,buyer,orders,amount) VALUES('" + data.idRecent + "', '" + data.buyer + "', '" + orders + "', '" + data.amount + "')", (err, result) => {
+                                    if (!err) {
+                                        resolve(result)
+                                    } else {
+                                        reject(err)
+                                    }
+                                })
                             }
                         } else {
                             result = "Out of data"
@@ -158,17 +175,51 @@ module.exports = {
                 })
             }
         })
+    },
+    getCountProduct: () => {
+        return new Promise((resolve, reject) => {
+            conn.query('SELECT count(id) from products', (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    },
+    getRecentOrde: (data) => {
+        // if (data === undefined) data = 'week'
+        console.log(data)
+        // SELECT *,SUM(amount),DAYOFWEEK(date), DAYNAME(date), EXTRACT(WEEK FROM date) as week, EXTRACT(YEAR FROM date) AS year FROM history GROUP BY year
+        const urlget = 'SELECT *,SUM(amount) as amountcount,DAYOFWEEK(date) as today, DAYNAME(date) as dayname,MONTHNAME(date) as monthname,YEAR(date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(WEEK FROM date) as week, EXTRACT(YEAR FROM date) AS year FROM history GROUP BY ' + data;
+        return new Promise((resolve, reject) => {
+            // conn.query(urlcountorder, (err, resultcountorder) => {
+            conn.query(urlget, (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+            // })
+        })
+    },
+    getAllOrder: () => {
+        let date = new Date()
+        console.log(date.getFullYear());
+        // console.log('SELECT *, EXTRACT(day FROM date) as day, sum(amount) as countAmount FROM history  WHERE EXTRACT(day FROM date) = ' + date.getDate() + ' GROUP BY day')
+        return new Promise((resolve, reject) => {
+            conn.query('SELECT EXTRACT(year FROM date) as year, sum(amount) as countAmount FROM history  WHERE EXTRACT(year FROM date) = ' + date.getFullYear() + ' GROUP BY year', (err, resYearIncome) => {
+                conn.query('SELECT count(idRecent) as idRecent FROM history', (err, resCount) => {
+                    conn.query('SELECT EXTRACT(day FROM date) as day, sum(amount) as countAmount FROM history  WHERE EXTRACT(day FROM date) = ' + date.getDate() + ' GROUP BY day', (err, rcAmount) => {
+                        if (!err) {
+                            resolve({ rcAmount, resCount, resYearIncome })
+                        } else {
+                            reject(err)
+                        }
+                    })
+                })
+            })
+        })
     }
-    // },
-    // getTotalAllData: () => {
-    //     return new Promise((resolve, reject) => {
-    //         conn.query('SELECT COUNT(id)', (err, result) => {
-    //             if (!err) {
-    //                 resolve(result)
-    //             } else {
-    //                 reject(err)
-    //             }
-    //         })
-    //     })
-    // }
 }
