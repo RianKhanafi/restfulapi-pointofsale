@@ -53,10 +53,10 @@ app.use(morgan('dev'))
 app.use(fileUpload())
 app.use(cookieParser())
 
-app.options('/api/v.0.1/products', cors())
-app.options('/api/v.0.1/products/:id', cors())
-app.options('/api/v.0.1/registration/login', cors())
-app.use('/', routerNav)
+// app.options('/api/products', cors())
+// app.options('/api/products/:id', cors())
+// app.options('/api/registration/login', cors())
+app.use('/', cors(), routerNav)
 
 // add not found route must on bottom
 app.get('*', (req, res) => {

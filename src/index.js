@@ -6,7 +6,7 @@ const products = require('./routes/products')
 const categories = require('./routes/categories')
 const registration = require('./routes/registrasi')
 
-Route.use('/api/v.0.1', products)
-Route.use('/api/v.0.1', categories)
-Route.use('/api/v.0.1', registration)
+Route.use('/api/', products)
+Route.use('/api/', categories)
+Route.use('/api/', registration)
 module.exports = Route

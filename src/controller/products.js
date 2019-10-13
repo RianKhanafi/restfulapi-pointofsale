@@ -236,10 +236,11 @@ module.exports = {
                 })
             })
     },
+    // grafik
     getRecentOrder: (req, res) => {
         let orderBy = req.query.order
+        // console.log(orderBy)
         orderBy = typeof orderBy !== 'undefined' ? orderBy : "week"
-        // orderBy = typeof orderBy !== 'undefined' ? orderBy : "week"
         productModel.getRecentOrde(orderBy)
             .then(result => {
                 res.json({
@@ -257,6 +258,23 @@ module.exports = {
     },
     getAllOrder: (req, res) => {
         productModel.getAllOrder()
+            .then((result) => {
+                res.json({
+                    status: 200,
+                    message: 'success getting count order',
+                    data: result
+                })
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 400,
+                    message: 'error getting data count order',
+                })
+            })
+    },
+    grOrder: (req, res) => {
+        // console.log('grOrder' +);
+        productModel.grOrder(req.query.order)
             .then((result) => {
                 res.json({
                     status: 200,

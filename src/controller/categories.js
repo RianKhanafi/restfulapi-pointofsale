@@ -1,40 +1,40 @@
 const categoriesModel = require('../models/categories')
-const redis = require('redis')
-const client = redis.createClient()
+// const redis = require('redis')
+// const client = redis.createClient()
 const categoryRedKey = "user: category"
 
 module.exports = {
     getCategories: (req, res) => {
-        return client.get(categoryRedKey, (err, categories) => {
-            if (categories) {
-                const result = JSON.parse(categories);
-                return res.json({
-                    from: 'cache',
+        // return client.get(categoryRedKey, (err, categories) => {
+        //     if (categories) {
+        //         const result = JSON.parse(categories);
+        //         return res.json({
+        //             from: 'cache',
+        //             status: 200,
+        //             length: result.length,
+        //             data: result,
+        //             message: "Show data success"
+        //         })
+        //     } else {
+        categoriesModel.getCategories()
+            .then(QueryResult => {
+                client.setex(categoryRedKey, 3600, JSON.stringify(QueryResult));
+                res.json({
                     status: 200,
-                    length: result.length,
-                    data: result,
-                    message: "Show data success"
+                    message: 'success get data categories',
+                    length: QueryResult.length,
+                    data: QueryResult
                 })
-            } else {
-                categoriesModel.getCategories()
-                    .then(QueryResult => {
-                        client.setex(categoryRedKey, 3600, JSON.stringify(QueryResult));
-                        res.json({
-                            status: 200,
-                            message: 'success get data categories',
-                            length: QueryResult.length,
-                            data: QueryResult
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        res.json({
-                            error: 400,
-                            message: 'Error getting data categories'
-                        })
-                    })
-            }
-        })
+            })
+            .catch(err => {
+                console.log(err);
+                res.json({
+                    error: 400,
+                    message: 'Error getting data categories'
+                })
+            })
+        // }
+        // })
     },
     addCategories: (req, res) => {
         const { category } = req.body

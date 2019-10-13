@@ -122,8 +122,6 @@ module.exports = {
         })
     },
     getpaginateProducts: (name, page, limit, sortBy) => {
-        // console.log({ name, page, limit, sortBy });
-        // console.log('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id where name like "%' + name + '%" ORDER BY ' + sortBy + ' asc limit ' + page + ',' + limit);
         return new Promise((resolve, reject) => {
             conn.query('SELECT a.*, b.category FROM products a INNER JOIN category b ON a.id_category = b.id where name like "%' + name + '%" ORDER BY ' + sortBy + ' asc limit ' + page + ',' + limit, (err, result) => {
                 if (!err) {
@@ -135,13 +133,11 @@ module.exports = {
         })
     },
     reduceProducts: (data) => {
-        // console.log(data)
+        console.log(data)
         let orders = data.ordername
         if (orders.length > 1) {
             orders = data.ordername.join()
-            // console.log(orders);
         }
-        // console.log(data.date)
         return new Promise((resolve, reject) => {
             // for (let order = 0; order < data.length; order++) {
             //     let orders = data.order
@@ -187,13 +183,11 @@ module.exports = {
             })
         })
     },
+    // grafik
     getRecentOrde: (data) => {
-        // if (data === undefined) data = 'week'
-        console.log(data)
-        // SELECT *,SUM(amount),DAYOFWEEK(date), DAYNAME(date), EXTRACT(WEEK FROM date) as week, EXTRACT(YEAR FROM date) AS year FROM history GROUP BY year
-        const urlget = 'SELECT *,SUM(amount) as amountcount,DAYOFWEEK(date) as today, DAYNAME(date) as dayname,MONTHNAME(date) as monthname,YEAR(date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(WEEK FROM date) as week, EXTRACT(YEAR FROM date) AS year FROM history GROUP BY ' + data;
+        console.log("get Order" + data)
+        const urlget = 'SELECT *,SUM(amount) as amountcount,DAYOFWEEK(date) as today, DAYNAME(date) as dayname,MONTHNAME(date) as monthname,YEAR(date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as week, EXTRACT(YEAR FROM date) AS year FROM history GROUP BY ' + data;
         return new Promise((resolve, reject) => {
-            // conn.query(urlcountorder, (err, resultcountorder) => {
             conn.query(urlget, (err, result) => {
                 if (!err) {
                     resolve(result)
@@ -201,24 +195,39 @@ module.exports = {
                     reject(err)
                 }
             })
-            // })
         })
     },
+    // card
     getAllOrder: () => {
-        let date = new Date()
-        console.log(date.getFullYear());
-        // console.log('SELECT *, EXTRACT(day FROM date) as day, sum(amount) as countAmount FROM history  WHERE EXTRACT(day FROM date) = ' + date.getDate() + ' GROUP BY day')
         return new Promise((resolve, reject) => {
-            conn.query('SELECT EXTRACT(year FROM date) as year, sum(amount) as countAmount FROM history  WHERE EXTRACT(year FROM date) = ' + date.getFullYear() + ' GROUP BY year', (err, resYearIncome) => {
-                conn.query('SELECT count(idRecent) as idRecent FROM history', (err, resCount) => {
-                    conn.query('SELECT EXTRACT(day FROM date) as day, sum(amount) as countAmount FROM history  WHERE EXTRACT(day FROM date) = ' + date.getDate() + ' GROUP BY day', (err, rcAmount) => {
-                        if (!err) {
-                            resolve({ rcAmount, resCount, resYearIncome })
-                        } else {
-                            reject(err)
-                        }
-                    })
-                })
+            conn.query("SELECT (SELECT sum(amount) FROM history WHERE DATE(date) = DATE(NOW() - INTERVAL 1 DAY)) AS yesterday, (SELECT sum(amount) FROM history WHERE DATE(date) = DATE(NOW() - INTERVAL 0 DAY)) AS daynow, (SELECT sum(amount) FROM history WHERE YEAR(date) = YEAR(CURDATE()) -1) AS yearlast , (SELECT sum(amount) FROM history WHERE YEAR(date) = YEAR(CURDATE())) AS yearnow, (SELECT COUNT(idRecent) FROM history WHERE WEEK(date) = WEEK(CURDATE())) AS weeknow, (SELECT COUNT(idRecent) FROM history WHERE DAY(date) = DAY(CURDATE())) AS dayordernnow, (SELECT COUNT(idRecent) FROM history WHERE WEEK(date) = WEEK(CURDATE()) -1 ) AS lastweek", (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    },
+
+
+    // menampilkan di Recent Order
+    grOrder: (value) => {
+        let to = 10
+        if (value === 'day') {
+            to = 10
+        } else if (value === 'month') {
+            to = 7
+        } else if (value === 'year') {
+            to = 4
+        }
+        return new Promise((resolve, reject) => {
+            conn.query('SELECT *, SUBSTR(DATE,1,' + to + ') AS dateday, SUBSTR(CURDATE(),1,' + to + ') AS datenow FROM history HAVING dateday = datenow ORDER BY date desc limit 10', (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
             })
         })
     }

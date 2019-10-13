@@ -5,10 +5,10 @@ const middleware = require('../../auth/middleware')
 const categoriesController = require('../controller/categories')
 
 route
-    .get('/categories', cors(), middleware.checkToken, categoriesController.getCategories)
-    .post('/categories', cors(), middleware.checkToken, categoriesController.addCategories)
-    .delete('/categories/:id', cors(), middleware.checkToken, categoriesController.deleteCategories)
-    .put('/categories', cors(), middleware.checkToken, categoriesController.updateCategories)
-    .get('/categories/:category', cors(), middleware.checkToken, categoriesController.getCategoriesbyname)
+    .get('/categories', middleware.checkToken, categoriesController.getCategories)
+    .post('/categories', middleware.checkToken, categoriesController.addCategories)
+    .delete('/categories/:id', middleware.checkToken, categoriesController.deleteCategories)
+    .put('/categories', middleware.checkToken, categoriesController.updateCategories)
+    .get('/categories/:category', middleware.checkToken, categoriesController.getCategoriesbyname)
 
 module.exports = route

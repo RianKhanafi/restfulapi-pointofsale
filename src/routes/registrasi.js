@@ -6,7 +6,7 @@ const middleware = require('../../auth/middleware')
 const registrationController = require('../controller/registration')
 
 route
-    .post('/registration', cors(), registrationController.addRegistration)
-    .get('/registration', cors(), registrationController.getRegistrant)
-    .post('/registration/login', cors(), registrationController.login)
+    .post('/registration', registrationController.addRegistration)
+    .get('/registration', registrationController.getRegistrant)
+    .post('/registration/login', registrationController.login)
 module.exports = route
