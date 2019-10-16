@@ -6,7 +6,7 @@ const fs = require('fs')
 const db = require('../configs/db')
 
 module.exports = {
-    // grafik
+    // grafik history
     getRevenue: (req, res) => {
         let orderBy = req.query.order
         // console.log(orderBy)
