@@ -32,37 +32,39 @@ module.exports = {
     },
     addProduct: (req, res) => {
         const { name, description, id_category, price, quantity, updated } = req.body
-        // set upload image
-        let image = req.files.image
-        if (image.mimetype.split('/')[1] === "jpeg" || image.mimetype.split('/')[1] === "png") {
-            let imgName = uuidv4() + `.${req.files.image.mimetype.split("/")[1]}`
-            image.mv('images/' + imgName, function (err) {
-                if (err)
-                    return res.status(500).send(err)
+        // console.log(req.body) 
+        // // set upload image
+        // let image = req.files.image
+        // console.log(req.files.image)
+        // if (image.mimetype.split('/')[1] === "jpeg" || image.mimetype.split('/')[1] === "png") {
+        //     let imgName = uuidv4() + `.${req.files.image.mimetype.split("/")[1]}`
+        //     image.mv('images/' + imgName, function (err) {
+        //         if (err)
+        //             return res.status(500).send(err)
+        //     })
+        //     image = imgName
+        //     //uuid
+        let id = uuidv4();
+        const data = { id, name, description, id_category, price, quantity, updated }
+        // console.log(data)
+        productModel.addProduct(data)
+            .then(resultQuer => {
+                res.json({
+                    status: 200,
+                    message: 'success adding new data',
+                    data
+                })
             })
-            image = imgName
-            //uuid
-            let id = uuidv4();
-            const data = { id, name, description, image, id_category, price, quantity, updated }
-            console.log(data)
-            productModel.addProduct(data)
-                .then(resultQuer => {
-                    res.json({
-                        status: 200,
-                        message: 'success adding new data',
-                        data
-                    })
+            .catch(err => {
+                console.log(err)
+                res.status(400).json({
+                    status: 400,
+                    mesage: 'error adding new data'
                 })
-                .catch(err => {
-                    console.log(err)
-                    res.status(400).json({
-                        status: 400,
-                        mesage: 'error adding new data'
-                    })
-                })
-        } else {
-            res.send('Other than jpeg or png not permitted')
-        }
+            })
+        // } else {
+        //     res.send('Other than jpeg or png not permitted')
+        // }
     },
     deleteProduct: (req, res) => {
         const data = req.query.id
@@ -199,7 +201,9 @@ module.exports = {
 
     },
     reduceProducts: (req, res) => {
-        // let date = new Date
+        // console.log('a')
+        // console.log(req.body)
+        // // let date = new Date
         let idRecent = uuidv4()
         const { buyer, quantity, id, amount, ordername } = req.body
         // const date = new Date();

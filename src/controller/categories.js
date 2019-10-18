@@ -1,6 +1,6 @@
 const categoriesModel = require('../models/categories')
 // const redis = require('redis')
-// const client = redis.createClient()
+// const client = redis.createClient() /////////////////
 const categoryRedKey = "user: category"
 
 module.exports = {

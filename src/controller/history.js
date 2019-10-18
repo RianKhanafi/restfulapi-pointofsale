@@ -6,10 +6,9 @@ const fs = require('fs')
 const db = require('../configs/db')
 
 module.exports = {
-    // grafik history
+    // grafik history  
     getRevenue: (req, res) => {
         let orderBy = req.query.order
-        // console.log(orderBy)
         orderBy = typeof orderBy !== 'undefined' ? orderBy : "week"
         historyModel.getRevenue(orderBy)
             .then(result => {

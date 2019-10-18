@@ -50,8 +50,11 @@ module.exports = {
     },
     login: (req, res) => {
         let email = req.body.email
-        // console.log(email);
         let password = req.body.password
+            console.log(req.body)
+            if(password === ''){
+                console.log('none password')
+            }else{
         // For the given username fetch u   ser from DB
         conn.query('SELECT * FROM user WHERE email=?', email, (err, result) => {
             // if (result[0] !== undefined) {
@@ -76,5 +79,6 @@ module.exports = {
             }
         })
     }
+}
 
 }
