@@ -2,19 +2,12 @@
 # About the POINT OF SALE EXPRESS
 > the `restfulapi-pointofsale` is an Application for Point os Sale APp
 
-# How to use it
-- clone or download this repository
-- import database sql
-  open your console and write 
-  
-$ npm start 
-
-# Requirments
+## Requirments
   - Node js v12.10.0
   - Npm package / Yarn package
   - Mysql Database
 
-# Instalation
+## Instalation
   Clone
   ```
   $ git clone  https://github.com/RianKhanafi/restfulapi-pointofsale.git
@@ -22,7 +15,7 @@ $ npm start
   $ npm start
   ```
 
-# features
+## features
 - get all data products
 - Cread products
 - Read products
@@ -35,7 +28,7 @@ $ npm start
 - Allow CORS
 - login and register with jsonwebtoken(JWT)
 
-# Route
+## Route
 - **Categories** 
   - **/categories** to get data category 
   - **/categories/:id**  to delete data category 
@@ -45,7 +38,7 @@ $ npm start
   - **/products/:id** to delete data products
   - **/products/reduce** to reduce products
   
-# METHOD
+## METHOD
  - **POST** post data
  - **GET** get data
  - **PUT** update data
