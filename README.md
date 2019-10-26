@@ -1,13 +1,25 @@
 
-# About the restfulapi-pointofsale
-the restfulapi-pointofsale is the ecommerce application
+# About the POINT OF SALE EXPRESS
+the restfulapi-pointofsale (nusantara foods) is an application for making an order at a restaurant
 
 # How to use it
-- clone or download this repository https://github.com/RianKhanafi/restfulapi-pointofsale.git
+- clone or download this repository
 - import database sql
   open your console and write 
   
 $ npm start 
+
+# Requirments
+  - Node js v12.10.0
+  - Npm package / Yarn package
+  - Mysql Database
+
+# Instalation
+  Clone
+  ```
+  $ git clone  https://github.com/RianKhanafi/restfulapi-pointofsale.git
+    cd  
+  ```
 
 # features
 - get all data products
