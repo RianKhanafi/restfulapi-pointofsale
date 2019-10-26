@@ -27,7 +27,7 @@
 ```
 
 ## features
-[x] get all data products
+[X] get all data products
 [x] Cread products
 [x] Read products
 [x] Update products
