@@ -2,11 +2,9 @@
 # About the POINT OF SALE EXPRESS
 > the `restfulapi-pointofsale` is an Application for Point os Sale App
 
-[Lets go to Quora](https://www.quora.com)
-
 ## Requirments
-  - Node js v12.10.0
-  - Npm package / Yarn package
+  - [Node js v12.10.0](https://nodejs.org/en/download/)
+  - [Npm](https://www.npmjs.com/get-npm) / [Yarn](https://yarnpkg.com/lang/en/docs/install/#windows-stable) package
   - Mysql Database
 
 ## Instalation
