@@ -1,6 +1,7 @@
 
 # About the POINT OF SALE EXPRESS
-the restfulapi-pointofsale (nusantara foods) is an application for making an order at a restaurant
+___________________________________
+> the `restfulapi-pointofsale` is an Application for Point os Sale APp
 
 # How to use it
 - clone or download this repository
