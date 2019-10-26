@@ -67,5 +67,5 @@
  - `PUT` update data
   
   
- Copyright &Copy;
+ Copyright (c)
   
