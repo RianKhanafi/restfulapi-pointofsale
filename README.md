@@ -12,15 +12,18 @@
   ```
   $ git clone  https://github.com/RianKhanafi/restfulapi-pointofsale.git
   $ cd restfulapi-pointofsale
-  $ npm start
   ```
 ## Setup .env
 ```
-  SERVER_PORT = __YOUR PORT__ 
-  DB_HOST= __YOUR DATABASE HOST NAME__
-  DB_USER= __YOUR DATABASE USERNAME__
-  DB_PASS= __YOUR DATABASE PASSWORD__
-  DB_NAME= __YOUR SECRET KEY__
+  SERVER_PORT = YOUR PORT
+  DB_HOST= YOUR DATABASE HOST NAME
+  DB_USER= YOUR DATABASE USERNAME
+  DB_PASS= YOUR DATABASE PASSWORD
+  DB_NAME= YOUR SECRET KEY
+```
+## Start Api
+```
+  $ npm start
 ```
 
 ## features
@@ -46,7 +49,7 @@
   - **/products/:id** to delete data products
   - **/products/reduce** to reduce products
   
-## METHOD
+## Method
  - **POST** post data
  - **GET** get data
  - **PUT** update data
