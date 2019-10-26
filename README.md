@@ -51,17 +51,19 @@
 
 ## Route
 - **Categories** 
-  - **/categories** to get data category 
-  - **/categories/:id**  to delete data category 
+  - `categories` to get data category 
+  - `/categories/:id`  to delete data category 
 - **products** 
-  - **/products**  to get data products as search paginate category 
-  - **/products/paginate** to running pagination on products page
-  - **/products/:id** to delete data products
-  - **/products/reduce** to reduce products
+  - `/products`  to get data products as search paginate category 
+  - `/products/paginate` to running pagination on products page
+  - `/products/:id` to delete data products
+  - `/products/reduce` to reduce products
+  
+  ``You so can see route in`` **SRC** ``> Route and choose route do you want`` 
   
 ## Method
- - **POST** post data
- - **GET** get data
- - **PUT** update data
+ - `POST` post data
+ - `GET` get data
+ - `PUT` update data
   
   
