@@ -27,27 +27,27 @@
 ```
 
 ## features
-[X] get all data products
-[x] Cread products
-[x] Read products
-[x] Update products
--[x] Delete products
--[x] pagination
--[x] Sort products by name, date and category
--[x] search product by name
--[x] Add/Reduce products
--[x] Allow CORS
--[x] login and register with jsonwebtoken(JWT)
--[x] Reduce
--[x] Redis
--[x] Recent Order
--[x] chart recent order
--[x] Income Today
--[x] Growth income
--[x] Order Today
--[x] Growth Order
--[x] Income this year
--[x] Growth Income Year
+- [X] get all data products
+- [x] Cread products
+- [x] Read products
+- [x] Update products
+- [x] Delete products
+- [x] pagination
+- [x] Sort products by name, date and category
+- [x] search product by name
+- [x] Add/Reduce products
+- [x] Allow CORS
+- [x] login and register with jsonwebtoken(JWT)
+- [x] Reduce
+- [x] Redis
+- [x] Recent Order
+- [x] chart recent order
+- [x] Income Today
+- [x] Growth income
+- [x] Order Today
+- [x] Growth Order
+- [x] Income this year
+- [x] Growth Income Year
 
 ## Route
 - **Categories** 
