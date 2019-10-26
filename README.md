@@ -5,7 +5,7 @@
 ## Requirments
   - [Node js v12.10.0](https://nodejs.org/en/download/)
   - [Npm](https://www.npmjs.com/get-npm) / [Yarn](https://yarnpkg.com/lang/en/docs/install/#windows-stable) package
-  - Mysql Database
+  - [Mysql](https://www.apachefriends.org/download.html) Database
 
 ## Instalation
   Clone
@@ -14,6 +14,14 @@
   $ cd restfulapi-pointofsale
   $ npm start
   ```
+## Setup .env
+```
+  SERVER_PORT = __YOUR PORT__ 
+  DB_HOST= __YOUR DATABASE HOST NAME__
+  DB_USER= __YOUR DATABASE USERNAME__
+  DB_PASS= __YOUR DATABASE PASSWORD__
+  DB_NAME= __YOUR SECRET KEY__
+```
 
 ## features
 - get all data products
