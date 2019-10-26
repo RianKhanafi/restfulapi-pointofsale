@@ -18,7 +18,8 @@ $ npm start
   Clone
   ```
   $ git clone  https://github.com/RianKhanafi/restfulapi-pointofsale.git
-    cd  
+  $ cd restfulapi-pointofsale
+  $ npm start
   ```
 
 # features
