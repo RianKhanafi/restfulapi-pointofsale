@@ -65,7 +65,6 @@
  - `POST` post data
  - `GET` get data
  - `PUT` update data
-  
-  
- Copyright (c)
+ - `PATCH` update data
+
   
