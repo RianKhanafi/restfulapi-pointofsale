@@ -27,11 +27,10 @@
 ```
 
 ## features
--[x] get all data products
-
--[x] Cread products
--[x] Read products
--[x] Update products
+[x] get all data products
+[x] Cread products
+[x] Read products
+[x] Update products
 -[x] Delete products
 -[x] pagination
 -[x] Sort products by name, date and category
