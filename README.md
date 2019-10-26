@@ -1,6 +1,5 @@
 
 # About the POINT OF SALE EXPRESS
-___________________________________
 > the `restfulapi-pointofsale` is an Application for Point os Sale APp
 
 # How to use it
