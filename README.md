@@ -59,7 +59,7 @@
   - `/products/:id` to delete data products
   - `/products/reduce` to reduce products
   
-  ``You so can see route in`` **SRC** ``> Route and choose route do you want`` 
+``You can also look in the`` **src / Route** ``folder and select the route you want``
   
 ## Method
  - `POST` post data
